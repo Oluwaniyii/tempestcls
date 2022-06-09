@@ -1,0 +1,2 @@
+FROM nginx:stable
+COPY ./default_dev.conf etc/nginx/conf.d/default.conf

@@ -1,0 +1,91 @@
+{
+  "name": "tempestcls",
+  "version": "1.6.3",
+  "engines": {
+    "node": ">=8.12.0"
+  },
+  "description": "a central login system",
+  "repository": "https://github.com/Oluwaniyii/tempestfolio",
+  "main": "app.js",
+  "author": "Oluwaniyii Ayodele",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ./bin/www --ext js",
+    "start": "node ./bin/www",
+    "test:unit": "set NODE_ENV=test && jest tests/unit",
+    "test:int": "set NODE_ENV=test && jest --detectOpenHandles --forceExit tests/int",
+    "coverage": "jest --collectCoverageFrom=src/**/**.js --coverage --detectOpenHandles --forceExit tests",
+    "lint": "eslint .",
+    "lint:write": "eslint --debug . --fix",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "push-tags": "git push --tags origin",
+    "test": "snyk test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "@sentry/node": "5.10.2",
+    "app-root-path": "^2.2.1",
+    "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser-graphql": "^1.1.0",
+    "config": "^2.0.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "2.8.5",
+    "debug": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "4.17.1",
+    "express-handlebars": "^6.0.6",
+    "helmet": "^3.22.0",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.7",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "node-mailjet": "^3.3.1",
+    "npm": "^6.14.10",
+    "path": "^0.12.7",
+    "sequelize": "^6.20.1",
+    "snyk": "^1.305.0",
+    "url": "0.11.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^21.26.2",
+    "eslint-plugin-mocha": "^5.3.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "jest": "^24.9.0",
+    "mocha": "^10.0.0",
+    "nock": "^13.2.6",
+    "nodemon": "1.18.3",
+    "prettier": "^1.19.1",
+    "sinon": "^14.0.0",
+    "supertest": "^3.4.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js}",
+      "test/**/*.{js}",
+      "!test/mock/**/*.{js}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/db/index.js",
+      "src/db/mongodb.js",
+      "src/db/redis.js"
+    ],
+    "testEnvironment": "node"
+  },
+  "snyk": true
+}
