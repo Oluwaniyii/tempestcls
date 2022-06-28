@@ -1,9 +1,8 @@
 "use strict";
 
-const mongodb = require("./mongodb");
-const sequelize = require("./sequelize");
+const { sequelize, connect: sequelizeConnect } = require("./sequelize");
 
 module.exports = {
-  mongodb,
-  sequelize
+  sequelize,
+  sequelizeConnect
 };
