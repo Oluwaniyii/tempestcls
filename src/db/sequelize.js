@@ -2,13 +2,12 @@ const { Sequelize } = require("sequelize");
 const config = require("config");
 const winston = require("../utils/logger/winston");
 
-//
 const sequelize = new Sequelize(
   config.get("db.mysql.database"),
   config.get("db.mysql.user"),
   config.get("db.mysql.password"),
   {
-    host: "mysql",
+    host: config.get("db.mysql.host"),
     dialect: "mysql"
   }
 );
@@ -28,4 +27,5 @@ async function connect() {
   process.on("SIGINT", onSIGINT);
 }
 
-module.exports = connect;
+module.exports.connect = connect;
+module.exports.sequelize = sequelize;

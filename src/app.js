@@ -2,7 +2,6 @@
 
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser-graphql");
 const helmet = require("helmet");
 const config = require("config");
 const Sentry = require("@sentry/node");
@@ -40,8 +39,8 @@ app.use(Sentry.Handlers.requestHandler());
  *
  * Sequelize:
  */
-const { sequelize } = require("../src/db");
-sequelize();
+const { sequelizeConnect } = require("../src/db");
+sequelizeConnect();
 
 /**
  * Require modules conditionally
@@ -65,16 +64,13 @@ app.set("env", process.env.NODE_ENV);
  */
 app.set("trust proxy", true);
 
-app.get("/", (req, res, next) => {
-  res.send("Hello");
-});
+// App Controller
+app.use(require("./controller"));
 
 /**
  * Morgan logger
  */
 app.use(stderrStream, stdoutStream);
-
-app.use(bodyParser.graphql());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

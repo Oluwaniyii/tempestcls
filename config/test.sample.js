@@ -29,6 +29,6 @@ module.exports = {
     dsn: process.env.SENTRY_DSN
   },
   mock: {
-    crashAppRoutes: true
+    crashAppRoutes: false
   }
 };

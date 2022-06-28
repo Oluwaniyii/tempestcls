@@ -18,7 +18,7 @@ const exitProcess = () => {
 /**
  * Catch 404 and forward to error handler
  */
-const notFoundErrorHandler = ({ originalUrl }, res, next) => {
+const notFoundErrorHandler = (req, res, next) => {
   next(boom.notFound());
 };
 
@@ -62,6 +62,9 @@ const uncaughtExceptionHandler = err => {
  * Custom error handler middleware
  * Decorate error object with additional data
  * WARNING: Must be defined last, after other app.use() and routes calls
+ *
+ * Currently errorDecorator perceives non boom error as server error irrespective of the statusCode or isDeveloperError property status
+ * If you are going to go by this then you should use boom to create exceptions in your code
  */
 const errorDecorator = (err, req, res, next) => {
   // Server error and stack trace is available - it is most likely a developer error
@@ -122,37 +125,8 @@ const finalErrorHandler = (err, req, res, next) => {
    * Display 404 page on production
    */
   if (err.isDeveloperError) exitProcess();
-  else {
-    const isProd = process.env.NODE_ENV === "production";
-
-    /**
-     * On production,
-     * Return error details for client/user error
-     * Return express status error for server errors
-     */
-    if (isProd) {
-      if (err.output.statusCode === 404)
-        return res.status(err.output.statusCode).send("page not found"); // should render 404 page in real scenerio 
-      else return res.sendStatus(err.output.statusCode);
-    }
-
-    // Send error details only on development
-    return res.status(err.output.statusCode).json(err);
-  }
+  else res.sendStatus(err.output.statusCode);
 };
-
-function handleErrors(error, res){
-  // boom Error
-  switch(error.output.statusCode){
-      case 400, 404, 401:
-        return res.sendStatus(err.output.statusCode);
-      break;
-
-      default:
-        return res.sendStatus(err.output.statusCode);
-      break;
-  }
-}
 
 module.exports = {
   exitProcess,
