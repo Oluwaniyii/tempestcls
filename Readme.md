@@ -1,13 +1,13 @@
-This project is an oauth based central login system for all of my personal project.
+This project is an oauth based central login system for all of my personal projects.
 The goal is to have a user create account once with a single click and have it persist in all projects minimising effort while trying out my projects
 
-The starter template is from [Sandor Turanszky's production-ready-expressjs-server](github:sandorTuranszky/production-ready-expressjs-server) with few tweaks to make it just enough for this project
+The starter template is from [Sandor Turanszky's production-ready-expressjs-server](https://github.com/sandorTuranszky/production-ready-expressjs-server) with few tweaks to make it just enough for this project
 
-Current stack is JavaScript/Nodejs and Mysql
+Current stack is Nodejs and Mysql
 
 ## Features
 
-- Nodejs `v. 16.\*`
+- Nodejs `v. ^16`
 - Error handling `v. 1.0.0`
 - Logging with Morgan and Winston
 - Application Configuration with <a href="https://github.com/lorenwest/node-config" target="_blank">node-config</a>
