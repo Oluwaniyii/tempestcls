@@ -13,7 +13,7 @@
     "dev": "nodemon ./bin/www --ext js",
     "start": "node ./bin/www",
     "db:init": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "test:unit:mocha": "set NODE_ENV=test && mocha tests/unit/** --bail",
+    "test:unit": "set NODE_ENV=test && mocha tests/unit/** --bail",
     "lint": "eslint .",
     "lint:write": "eslint --debug . --fix",
     "version:patch": "npm version patch",
@@ -53,6 +53,7 @@
     "sequelize": "^6.20.1",
     "snyk": "^1.305.0",
     "url": "0.11.0",
+    "uuid": "^8.3.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {

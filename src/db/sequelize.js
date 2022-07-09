@@ -8,7 +8,10 @@ const sequelize = new Sequelize(
   config.get("db.mysql.password"),
   {
     host: config.get("db.mysql.host"),
-    dialect: "mysql"
+    dialect: "mysql",
+    define: {
+      freezeTableName: true
+    }
   }
 );
 
