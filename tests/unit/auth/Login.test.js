@@ -8,7 +8,8 @@ const chaiaspromised = require("chai-as-promised");
 const Login = require("../../../src/components/auth/Login");
 const InMemoryRepository = require("../../InMemoryUserRepository");
 const Session = require("../../../src/components/auth/Session");
-const AuthException = require("../../../src/components/auth/Exception/AuthException");
+const AuthException = require("../../../src/components/auth/Exception/AuthAuthenticationException");
+const bcrypt = require("../../../src/libraries/bcrypt");
 
 chai.use(chaiaspromised);
 
@@ -17,13 +18,13 @@ describe("Login", function() {
     const repository = new InMemoryRepository([
       {
         id: 1,
-        username: "JohnDoe",
+        username: "John Doe",
         email: "johndoe@gmail.com",
         password: "John123"
       },
       {
         id: 2,
-        username: "JaneDoe",
+        username: "Jane Doe",
         email: "janedoe@gmail.com",
         password: "Jane123"
       }
@@ -49,11 +50,15 @@ describe("Login", function() {
 
       inputs.forEach(function(input, index) {
         it(`dataCase ${index + 1}`, function() {
+          const compare = sinon.stub(bcrypt, "compare").callsFake(function(password1, password2) {
+            console.log("fake compare call");
+            return password1 === password2;
+          });
           const action = login.init(input.email, input.password);
 
           return expect(action).to.be.rejected.then(function(error) {
             expect(error).to.be.an.instanceOf(AuthException);
-            expect(error).to.have.property("statusCode", 401);
+            compare.restore();
           });
         });
       });
@@ -73,6 +78,9 @@ describe("Login", function() {
 
       inputs.forEach(function(input, index) {
         it(`dataCase ${index + 1}`, function() {
+          const compare = sinon.stub(bcrypt, "compare").callsFake(function(password1, password2) {
+            return password1 === password2;
+          });
           const issue = sinon.stub(Session.prototype, "issue").returns({
             id: "12ef3c4ad5bc",
             issued_at: new Date().getTime(),
@@ -90,8 +98,8 @@ describe("Login", function() {
             expect(data.session.id).to.be.a("string");
             expect(data.session.issued_at).to.be.a("number");
             expect(data.session.expire_in).to.be.a("number");
-
             issue.restore();
+            compare.restore();
           });
         });
       });

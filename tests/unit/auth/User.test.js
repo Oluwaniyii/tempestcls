@@ -20,7 +20,7 @@ describe("User", function() {
     expect(user.getPassword()).to.equal(user1.password);
   });
 
-  describe("it should be able to serialize user data with the expception of password", function() {
+  describe("Serialize", function() {
     it("should return serialized data as a javascript object", function() {
       const serializedUserData = user.serialize();
 

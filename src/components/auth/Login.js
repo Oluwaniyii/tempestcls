@@ -1,8 +1,9 @@
 "use strict";
 
-const AuthException = require("./Exception/AuthException");
+const AuthAuthenticationException = require("./Exception/AuthAuthenticationException");
 const User = require("./User");
 const Session = require("./Session");
+const bcrypt = require("../../libraries/bcrypt");
 
 class Login {
   email;
@@ -20,8 +21,8 @@ class Login {
     this.user = new User(user);
   }
 
-  verifyPassword() {
-    return this.password === this.user.getPassword();
+  async verifyPassword() {
+    return await bcrypt.compare(this.password, this.user.getPassword());
   }
 
   async issueNewSession() {
@@ -35,11 +36,12 @@ class Login {
 
     isEmailAvailable = await this.repository.emailExists(this.email);
 
-    if (isEmailAvailable) this.setUser(await this.repository.getUserByEmail(this.email));
+    if (!isEmailAvailable) return isAuthenticated;
 
-    isValidPassword = this.verifyPassword();
+    this.setUser(await this.repository.getUserByEmail(this.email));
+    isValidPassword = await this.verifyPassword();
 
-    if (isEmailAvailable && isValidPassword) isAuthenticated = true;
+    if (isValidPassword) isAuthenticated = true;
 
     return isAuthenticated;
   }
@@ -48,7 +50,7 @@ class Login {
     this.email = email;
     this.password = password;
 
-    if (!(await this.authenticate())) throw new AuthException();
+    if (!(await this.authenticate())) throw new AuthAuthenticationException();
 
     return {
       userId: this.user.getId(),
