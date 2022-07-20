@@ -80,15 +80,13 @@ const errorDecorator = (err, req, res, next) => {
   const originalMessage = err.message || null;
 
   const options = {
-    // Add more details
+    statusCode: err.statusCode,
     decorate: {
-      // Assign existing `isDeveloperError` if available
       isDeveloperError: err.isDeveloperError || serverErrorWithStack || nonBoomNoStatusCode,
       originalUrl: req.originalUrl,
       method: req.method,
       ip: req.ip
     },
-    // Add stack trace if available
     data: { stack: err.stack || "n/a" }
   };
 
@@ -125,7 +123,7 @@ const finalErrorHandler = (err, req, res, next) => {
    * Display 404 page on production
    */
   if (err.isDeveloperError) exitProcess();
-  else res.sendStatus(err.output.statusCode);
+  else res.status(err.output.statusCode).json(err.output.payload);
 };
 
 module.exports = {
