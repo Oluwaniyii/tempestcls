@@ -7,8 +7,8 @@ class SessionRepository {
     this.model = SessionModel;
   }
 
-  async save({ sessionId, issuedAt, expireIn }) {
-    await this.model.create({ session_id: sessionId, issued_at: issuedAt, expire_in: expireIn });
+  async save({ userId, sessionId, issuedAt, expireIn }) {
+    await this.model.create({ userId, sessionId, issuedAt, expireIn });
   }
 }
 

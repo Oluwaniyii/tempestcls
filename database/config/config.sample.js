@@ -12,7 +12,7 @@ module.exports = {
     host: "",
     dialect: "mysql",
     migrationStorage: "json",
-    migrationStoragePath: ""
+    migrationStorage: "sequelize"
   },
   test: {
     username: process.env.MYSQL_USER,
@@ -21,7 +21,7 @@ module.exports = {
     host: "",
     dialect: "mysql",
     migrationStorage: "json",
-    migrationStoragePath: "./../sequelizeMeta.json"
+    migrationStorage: "sequelize"
   },
   production: {
     username: process.env.MYSQL_USER,
@@ -30,6 +30,6 @@ module.exports = {
     host: "",
     dialect: "mysql",
     migrationStorage: "json",
-    migrationStoragePath: "./../sequelizeMeta.json"
+    migrationStorage: "sequelize"
   }
 };

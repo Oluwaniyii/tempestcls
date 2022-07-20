@@ -17,8 +17,9 @@ class Login {
     this.session = new Session();
   }
 
-  setUser(user) {
-    this.user = new User(user);
+  async setUser() {
+    const { userId, username, email, password } = await this.repository.getUserByEmail(this.email);
+    this.user = new User(userId, username, email, password);
   }
 
   async verifyPassword() {
@@ -26,7 +27,7 @@ class Login {
   }
 
   async issueNewSession() {
-    return await this.session.issue();
+    return await this.session.issue(this.user.getId());
   }
 
   async authenticate() {
@@ -38,7 +39,8 @@ class Login {
 
     if (!isEmailAvailable) return isAuthenticated;
 
-    this.setUser(await this.repository.getUserByEmail(this.email));
+    await this.setUser();
+
     isValidPassword = await this.verifyPassword();
 
     if (isValidPassword) isAuthenticated = true;

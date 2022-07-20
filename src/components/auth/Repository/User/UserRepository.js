@@ -10,7 +10,7 @@ class UserRepository {
     return user ? true : false;
   }
 
-  async getUserByEmail() {
+  async getUserByEmail(email) {
     const user = await this.model.findOne({ where: { email } });
     return user;
   }

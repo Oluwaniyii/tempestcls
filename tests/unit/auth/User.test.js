@@ -11,7 +11,7 @@ describe("User", function() {
     email: "john@gmail.com",
     password: "john123"
   };
-  const user = new User(user1);
+  const user = new User(user1.id, user1.username, user1.email, user1.password);
 
   it("it should be able get user details", function() {
     expect(user.getId()).to.equal(user1.id);

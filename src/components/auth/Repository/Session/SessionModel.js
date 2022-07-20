@@ -10,10 +10,13 @@ Session.init(
     sessionId: {
       type: DataTypes.STRING
     },
-    issued_at: {
+    userId: {
+      type: DataTypes.STRING
+    },
+    issuedAt: {
       type: DataTypes.NUMBER
     },
-    expire_in: {
+    expireIn: {
       type: DataTypes.NUMBER
     }
   },

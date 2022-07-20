@@ -8,7 +8,7 @@ const chaiaspromised = require("chai-as-promised");
 const Login = require("../../../src/components/auth/Login");
 const InMemoryRepository = require("../../InMemoryUserRepository");
 const Session = require("../../../src/components/auth/Session");
-const AuthException = require("../../../src/components/auth/Exception/AuthAuthenticationException");
+const AuthAuthenticationException = require("../../../src/components/auth/Exception/AuthAuthenticationException");
 const bcrypt = require("../../../src/libraries/bcrypt");
 
 chai.use(chaiaspromised);
@@ -51,13 +51,12 @@ describe("Login", function() {
       inputs.forEach(function(input, index) {
         it(`dataCase ${index + 1}`, function() {
           const compare = sinon.stub(bcrypt, "compare").callsFake(function(password1, password2) {
-            console.log("fake compare call");
             return password1 === password2;
           });
           const action = login.init(input.email, input.password);
 
           return expect(action).to.be.rejected.then(function(error) {
-            expect(error).to.be.an.instanceOf(AuthException);
+            expect(error).to.be.an.instanceOf(AuthAuthenticationException);
             compare.restore();
           });
         });

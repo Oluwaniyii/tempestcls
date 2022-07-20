@@ -2,7 +2,7 @@ const uuid = require("../../libraries/uuid");
 const SessionRepository = require("./Repository/Session/SessionRepository");
 
 class Session {
-  id;
+  sessionId;
   issuedAt;
   expiry = 86400000; // 1000 milliseconds = 1 second;  86,400 = 24 hours
   repository;
@@ -13,14 +13,15 @@ class Session {
 
   async store() {
     await this.repository.save({
-      sessionId: this.id,
+      userId: this.userId,
+      sessionId: this.sessionId,
       issuedAt: this.issuedAt,
       expireIn: this.expiry
     });
   }
 
   generateId() {
-    this.id = uuid.generate();
+    this.sessionId = uuid.generate();
   }
 
   setIssuedAt() {
@@ -32,7 +33,8 @@ class Session {
     this.setIssuedAt();
   }
 
-  async issue() {
+  async issue(userId) {
+    this.userId = userId;
     this.create();
     await this.store();
 
@@ -40,7 +42,7 @@ class Session {
   }
 
   serialize() {
-    return { id: this.id, issued_at: this.issuedAt, expire_in: this.expiry };
+    return { id: this.sessionId, issued_at: this.issuedAt, expire_in: this.expiry };
   }
 }
 
