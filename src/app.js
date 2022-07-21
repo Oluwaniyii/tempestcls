@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const config = require("config");
@@ -64,16 +65,16 @@ app.set("env", process.env.NODE_ENV);
  */
 app.set("trust proxy", true);
 
-// App Controller
-app.use(require("./controller"));
-
 /**
  * Morgan logger
  */
 app.use(stderrStream, stdoutStream);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
+
+// App Controller
+app.use(require("./controller"));
 
 /**
  * ERROR HANDLING

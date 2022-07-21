@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("User", {
+    await queryInterface.createTable("Session", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -11,19 +11,18 @@ module.exports = {
       },
       userId: {
         allowNull: false,
-        unique: true,
         type: Sequelize.STRING
       },
-      username: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      email: {
+      sessionId: {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING
       },
-      password: {
+      issuedAt: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      expireIn: {
         allowNull: false,
         type: Sequelize.STRING
       },
@@ -39,6 +38,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Session");
   }
 };
