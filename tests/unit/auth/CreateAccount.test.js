@@ -39,7 +39,7 @@ describe("Create Account", function() {
     });
 
     describe("Should create a new user when everything is right", function() {
-      const userdata = {
+      const user = {
         username: "Jane Doe",
         email: "janedoe@gmail.com",
         password: "Jane123"
@@ -49,15 +49,19 @@ describe("Create Account", function() {
         const hash = sinon.stub(bcrypt, "hash").callsFake(function(password, saltRounds) {
           return password;
         });
-        const action = createAccount.init(userdata.username, userdata.email, userdata.password);
+        const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dc");
+
+        const action = createAccount.init(user.username, user.email, user.password);
 
         return expect(action).to.be.fulfilled.then(function(data) {
           expect(data).to.be.an("object");
           expect(data).to.have.property("userId");
-          expect(data).to.have.property("username", userdata.username);
-          expect(data).to.have.property("email", userdata.email);
+          expect(data).to.have.property("username", user.username);
+          expect(data).to.have.property("email", user.email);
           expect(data.userId).to.be.a("string");
+          expect(data.password).to.be.a("undefined");
           hash.restore();
+          generate.restore();
         });
       });
 
@@ -67,15 +71,9 @@ describe("Create Account", function() {
         });
         const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dc");
         const create = sinon.spy(repository, "createUser");
-        await createAccount.init(userdata.username, userdata.email, userdata.password);
+        await createAccount.init(user.username, user.email, user.password);
 
-        sinon.assert.calledWith(
-          create,
-          "1b2a3c4e25dc",
-          userdata.username,
-          userdata.email,
-          userdata.password
-        );
+        sinon.assert.calledWith(create, "1b2a3c4e25dc", user.username, user.email, user.password);
         create.restore();
         generate.restore();
         hash.restore();

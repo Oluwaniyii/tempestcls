@@ -1,6 +1,8 @@
-const CreateAccountException = require("./Exception/CreateAccountException");
 const uuid = require("../../libraries/uuid");
 const bcrypt = require("../../libraries/bcrypt");
+const User = require("./User");
+const CreateAccountException = require("./Exception/CreateAccountException");
+
 
 class CreateAccount {
   username;
@@ -42,7 +44,10 @@ class CreateAccount {
       throw new CreateAccountException();
     }
 
-    return await this.createUser();
+    await this.createUser();
+
+    this.user = new User(this.userId, this.username, this.email, this.password);
+    return this.user.serialize();
   }
 }
 

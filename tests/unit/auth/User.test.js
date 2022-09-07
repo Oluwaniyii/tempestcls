@@ -30,7 +30,7 @@ describe("User", function() {
     it("should return an object with user's safe data", function() {
       const serializedUserData = user.serialize();
 
-      expect(serializedUserData.id).to.equal(user1.id);
+      expect(serializedUserData.userId).to.equal(user1.id);
       expect(serializedUserData.username).to.equal(user1.username);
       expect(serializedUserData.email).to.equal(user1.email);
     });
