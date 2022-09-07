@@ -14,6 +14,11 @@ class UserRepository {
     const user = await this.model.findOne({ where: { email } });
     return user;
   }
+
+  async createUser(userId, username, email, password) {
+    const newUser = await this.model.create({ userId, username, email, password });
+    return newUser;
+  }
 }
 
 module.exports = UserRepository;

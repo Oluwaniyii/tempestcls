@@ -50,6 +50,15 @@ class InMemoryUserRepository {
       }
     }
   }
+
+  createUser(userId, username, email, password) {
+    return {
+      userId,
+      username,
+      email,
+      password
+    };
+  }
 }
 
 module.exports = InMemoryUserRepository;
