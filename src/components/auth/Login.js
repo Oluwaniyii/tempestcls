@@ -2,7 +2,6 @@
 
 const AuthAuthenticationException = require("./Exception/AuthAuthenticationException");
 const User = require("./User");
-const Session = require("./Session");
 const bcrypt = require("../../libraries/bcrypt");
 
 class Login {
@@ -10,11 +9,11 @@ class Login {
   password;
   user;
 
-  constructor(repository) {
+  constructor(repository, session) {
     if (!repository) throw new Error("repository is required");
 
     this.repository = repository;
-    this.session = new Session();
+    this.session = session;
   }
 
   async setUser() {

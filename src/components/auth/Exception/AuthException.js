@@ -2,8 +2,8 @@ class AuthException extends Error {
   constructor() {
     super();
 
-    this.message = "invalid credentials";
-    this.statusCode = 401;
+    this.message = null;
+    this.statusCode = null;
     this.isDeveloperError = false;
     this.stack = null;
   }

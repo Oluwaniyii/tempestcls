@@ -1,5 +1,4 @@
 const uuid = require("../../libraries/uuid");
-const SessionRepository = require("./Repository/Session/SessionRepository");
 
 class Session {
   sessionId;
@@ -7,8 +6,8 @@ class Session {
   expiry = 86400000; // 1000 milliseconds = 1 second;  86,400 = 24 hours
   repository;
 
-  constructor() {
-    this.repository = new SessionRepository();
+  constructor(repository) {
+    this.repository = repository;
   }
 
   async store() {

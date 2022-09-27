@@ -1,20 +1,16 @@
 "use strict";
 
 require("mocha");
-const { expect } = require("chai");
+const { expect, use } = require("chai");
 const sinon = require("sinon");
 const UserRepository = require("../../../src/components/auth/Repository/User/UserRepository");
 
-/**
- * This test is not to run tests on orm thats not ours to deal with but to test that the action of our repository behaves as expected
- * the repository is a middle-er between the ORM and our application (this test is kind of like an interface to assure our repository behaves the way we expect)
- */
 describe("UserRepository", function() {
-  describe("checkForEmail", function() {
+  describe("emailExists", function() {
+    const userRepository = new UserRepository();
+
     it("should return true if user with provided email exist", async function() {
       this.timeout(0);
-
-      const userRepository = new UserRepository();
       const findOne = sinon.stub(userRepository.model, "findOne").returns({
         username: "John Doe",
         email: "johndoe@gmail.com",
@@ -28,8 +24,6 @@ describe("UserRepository", function() {
 
     it("should return false there is no user with provided email", async function() {
       this.timeout(0);
-
-      const userRepository = new UserRepository();
       const findOne = sinon.stub(userRepository.model, "findOne").returns(null);
       const action = await userRepository.emailExists("johndoe@gmail.com");
 
@@ -38,5 +32,39 @@ describe("UserRepository", function() {
     });
   });
 
-  describe("getUserByEmail", function() {});
+  describe("createUser", function() {
+    const userRepository = new UserRepository();
+    const user = {
+      id: "1b2a3c4e25dc",
+      username: "John Doe",
+      email: "johndoe@gmail.com",
+      password: "John123 "
+    };
+
+    it("should call model 'create' with correct details", async function() {
+      const create = sinon.stub(userRepository.model, "create");
+
+      await userRepository.createUser(user.id, user.username, user.email, user.password);
+
+      sinon.assert.calledOnceWithExactly(create, {
+        userId: user.id,
+        username: "John Doe",
+        email: user.email,
+        password: user.password
+      });
+    });
+  });
+
+  describe("getUserByEmail", async function() {
+    const userRepository = new UserRepository();
+
+    it("should call model 'findOne' with given email", async function() {
+      const findOne = sinon.stub(userRepository.model, "findOne");
+      await userRepository.getUserByEmail("john@example.com");
+
+      sinon.assert.calledOnceWithExactly(findOne, { where: { email: "john@example.com" } });
+
+      findOne.restore();
+    });
+  });
 });

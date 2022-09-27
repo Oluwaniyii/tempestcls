@@ -3,7 +3,6 @@ const bcrypt = require("../../libraries/bcrypt");
 const User = require("./User");
 const CreateAccountException = require("./Exception/CreateAccountException");
 
-
 class CreateAccount {
   username;
   email;
@@ -14,8 +13,8 @@ class CreateAccount {
     this.repository = repository;
   }
 
-  async emailExists() {
-    return await this.repository.emailExists(this.email);
+  async emailExists(email) {
+    return await this.repository.emailExists(email);
   }
 
   async createUser() {
@@ -35,14 +34,12 @@ class CreateAccount {
   }
 
   async init(username, email, password) {
+    if (await this.emailExists(email)) throw new CreateAccountException(); // fail fast
+
     this.userId = uuid.generate();
     this.username = username;
     this.email = email;
     this.password = await this.hashPassword(password);
-
-    if (await this.emailExists()) {
-      throw new CreateAccountException();
-    }
 
     await this.createUser();
 
