@@ -10,10 +10,6 @@ module.exports = {
     }
   },
   db: {
-    mongoose: {
-      url: process.env.MONGO_DB,
-      auto_reconnect: true
-    },
     mysql: {
       host: process.env.MYSQL_HOST,
       database: process.env.MYSQL_DATABASE,

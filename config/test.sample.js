@@ -10,15 +10,14 @@ module.exports = {
     }
   },
   db: {
-    mongoose: {
-      url: process.env.MONGO_DB,
-      auto_reconnect: true
-    },
     mysql: {
       host: process.env.MYSQL_HOST,
       database: process.env.MYSQL_DATABASE,
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD
+    },
+    sqlite: {
+      storage: "../data/sqlite/database.sqlite"
     }
   },
   mailjet: {
