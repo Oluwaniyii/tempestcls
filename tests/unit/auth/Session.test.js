@@ -12,13 +12,33 @@ const uuid = require("../../../src/libraries/uuid");
 chai.use(chaiaspromised);
 
 describe("Session", function() {
-  const session = new Session();
+  const sessionRepository = new SessionRepository();
+  const session = new Session(sessionRepository);
 
   describe("issue", function() {
-    it("should return a new session object", function() {
-      const save = sinon.stub(SessionRepository.prototype, "save");
-      const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dc");
-      const action = session.issue();
+    it("should save session to database", async function() {
+      this.timeout(0);
+      const save = sinon.stub(sessionRepository, "save");
+      const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dcee");
+      const userId = "1b2a3c4e25dc";
+      await session.issue(userId);
+
+      sinon.assert.calledWithExactly(save, {
+        userId: userId,
+        sessionId: session.sessionId,
+        issuedAt: session.issuedAt,
+        expireIn: session.expiry
+      });
+      save.restore();
+      generate.restore();
+    });
+
+    it("should return session object created for userId", function() {
+      this.timeout(0);
+      const save = sinon.stub(sessionRepository, "save");
+      const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dcee");
+      const userId = "1b2a3c4e25dc";
+      const action = session.issue(userId);
 
       return expect(action).to.be.fulfilled.then(function(data) {
         expect(data).to.be.an("object");
@@ -32,16 +52,6 @@ describe("Session", function() {
         save.restore();
         generate.restore();
       });
-    });
-
-    it("should save session to database", async function() {
-      const save = sinon.stub(SessionRepository.prototype, "save");
-      const generate = sinon.stub(uuid, "generate").returns("1b2a3c4e25dc");
-      await session.issue();
-
-      sinon.assert.called(save);
-      save.restore();
-      generate.restore();
     });
   });
 });

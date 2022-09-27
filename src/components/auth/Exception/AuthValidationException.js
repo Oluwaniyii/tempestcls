@@ -1,12 +1,12 @@
-class AuthException extends Error {
+const AuthException = require("./AuthException");
+
+class AuthValidationException extends AuthException {
   constructor(message) {
     super();
 
     this.message = message;
     this.statusCode = 400;
-    this.isDeveloperError = false;
-    this.stack = null;
   }
 }
 
-module.exports = AuthException;
+module.exports = AuthValidationException;

@@ -52,6 +52,7 @@
     "path": "^0.12.7",
     "sequelize": "^6.20.1",
     "snyk": "^1.972.0",
+    "sqlite3": "^5.1.1",
     "url": "0.11.0",
     "uuid": "^8.3.2",
     "winston": "^3.2.1"
@@ -74,7 +75,8 @@
     "nodemon": "1.18.3",
     "prettier": "^1.19.1",
     "sequelize-cli": "^6.4.1",
-    "sinon": "^14.0.0"
+    "sinon": "^14.0.0",
+    "sqlite": "^4.1.2"
   },
   "snyk": true
 }
